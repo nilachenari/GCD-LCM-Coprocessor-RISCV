@@ -12,8 +12,9 @@ module controller(input logic [6:0] op,
                     output logic PCRControl);
     logic [1:0] ALUOp;
     logic Branch;
+    logic  Start, ALU3SrcA;
     maindec md(op, ResultSrc, MemWrite, Branch,
-    ALUSrc, RegWrite, Jump, ImmSrc, ALUOp, PCRControl);
+    ALUSrc, RegWrite, Jump, ImmSrc, ALUOp, Start, ALU3SrcA);
     aludec ad(op[5], funct3, funct7b5, ALUOp, ALUControl);
     assign PCSrc = (Branch & (Zero ^ funct3[0])) | Jump; // if beq func3[0] == 0 and zero should be 1. if bne func3[0] == 1 and zero should be 0
 endmodule
