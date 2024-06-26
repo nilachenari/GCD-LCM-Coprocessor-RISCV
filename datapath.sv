@@ -52,8 +52,7 @@ module datapath(input logic clk ,reset, PCRControl,
     mux2 #(32) ALU3srcAmux(SrcA, ALU1Result, ALU3SrcASelect, SrcAfterMux); 
     mux3 #(32) ALU3srcBmux(WriteData, ImmExt, ALU2Result, ALU3SrcBSelect, SrcB);
 
-    mux3 #(32) resultmux( ALUResult, ReadData, PCPlus4,
-    ResultSrc, Result);
+    mux3 #(32) resultmux( ALUResult, ReadData, PCPlus4, ResultSrc, Result);
 endmodule
 
 

@@ -7,7 +7,7 @@ module maindec(input logic [6:0] op,
                 output logic [1:0] ImmSrc, 
                 output logic [1:0] ALUOp,
                 output logic PCRControl,
-                output logic Start,
+                output logic Start, // start indicates that the instructon is gcd or lcm
                 output logic ALU3SrcA);
     logic [14:0] controls;
 
