@@ -40,8 +40,8 @@ module maindec(input logic [6:0] op,
             7'b1101111: controls = 16'b1_11_00_0_10_0_000_1_1_0_0; // jal
             7'b1100111: controls = 16'b1_00_01_0_00_0_010_1_0_0_0; // jalr
 
-            7'b0000000: controls = 16'b1_xx_10_0_00_0_110_0_0_1_0; // gcd
-            7'b0000001: controls = 16'b1_xx_10_0_00_0_110_0_0_1_1; // lcm
+            7'b0000000: controls = 16'b1_xx_10_0_00_0_000_0_0_1_0; // gcd
+            7'b0000001: controls = 16'b1_xx_10_0_00_0_000_0_0_1_1; // lcm
 
             default: controls = 16'bx_xx_xx_x_xx_x_xxx_x_1_0_0; // ???
     endcase
