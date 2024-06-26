@@ -1,6 +1,3 @@
-i dont think we need this
-
-
 
 module aludec(input logic opb5,
             input logic [2:0] funct3,
