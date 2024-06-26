@@ -9,12 +9,12 @@ module testbench();
     
     // initialize test
     initial begin
-        reset <= 1; # 22; reset <= 0;
+        reset <= 1; # 30; reset <= 0;
     end
         
     // generate clock to sequence tests
     always begin
-        clk <= 1; # 5; clk <= 0; # 5;
+        clk <= 1; # 15; clk <= 0; # 15;
     end
      
     // check results
