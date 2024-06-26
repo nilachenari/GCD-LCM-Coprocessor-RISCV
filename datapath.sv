@@ -1,6 +1,8 @@
 module datapath(input logic clk, reset, PCRControl,
+                input logic [1:0] ALU3SrcBSelect, // here
+                input logic ALU3SrcASelect, // here
                 input logic [1:0] ResultSrc,
-                input logic PCSrc, ALUSrc,
+                input logic PCSrc,
                 input logic RegWrite,
                 input logic [1:0] ImmSrc,
                 input logic [2:0] ALUControl,
@@ -40,8 +42,11 @@ module datapath(input logic clk, reset, PCRControl,
 
     
     // ALU3 logic
-    mux2 #(32) srcbmux(WriteData, ImmExt, ALUSrc, SrcB);
-    alu alu(SrcA, SrcB, ALUControl, ALUResult, Zero);
+
+    alu alu3(SrcA, SrcB, ALUControl, ALUResult, Zero);
+    mux2 #(32) ALU3srcAmux(SrcA, ALU1Result, ALU3SrcASelect, SrcB);    
+    mux3 #(32) ALU3srcBmux(WriteData, ImmExt, ALU2Result, ALU3SrcBSelect, SrcB);
+
     mux3 #(32) resultmux( ALUResult, ReadData, PCPlus4,
     ResultSrc, Result);
 endmodule
