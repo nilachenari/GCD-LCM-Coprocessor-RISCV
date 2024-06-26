@@ -1,7 +1,7 @@
-module datapath(input logic clk, reset, PCRControl,
+module datapath(input logic clk ,reset, PCRControl,
+                input logic [1:0] ResultSrc,
                 input logic [1:0] ALU3SrcBSelect, // here
                 input logic ALU3SrcASelect, // here
-                input logic [1:0] ResultSrc,
                 input logic PCSrc,
                 input logic RegWrite,
                 input logic [1:0] ImmSrc,
@@ -11,6 +11,7 @@ module datapath(input logic clk, reset, PCRControl,
                 input logic [31:0] Instr,
                 output logic [31:0] ALUResult, WriteData,
                 input logic [31:0] ReadData);
+
     logic [31:0] PCNext, PCPlus4, PCAdderRes, PCTarget;
     logic [31:0] ImmExt;
     logic [31:0] SrcA, SrcB;
