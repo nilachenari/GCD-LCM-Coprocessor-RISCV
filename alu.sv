@@ -13,6 +13,7 @@ module alu(input  logic [31:0] a, b,
       3'b011:       y = a | b;
       3'b100:       y = a ^ b;
       3'b101:       y = (a < b) ? 1 : 0;
+      3'b110:       y = a << b;
       default: y = 'x;
     endcase
 endmodule
