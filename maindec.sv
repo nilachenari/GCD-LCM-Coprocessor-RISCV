@@ -5,9 +5,11 @@ module maindec(input logic [6:0] op,
                 output logic RegWrite, Jump,
                 output logic [1:0] ImmSrc, 
                 output logic [1:0] ALU3SrcB,
-                output logic [1:0] ALUOp,
-                output logic PCRControl);
-    logic [13:0] controls;
+                output logic [2:0] ALUOp,
+                output logic PCRControl,
+                output logic Start,
+                output logic ALU3SrcA);
+    logic [15:0] controls;
 
     // 0        RegWrite
     // 1,2      ImmSrc
@@ -30,18 +32,18 @@ module maindec(input logic [6:0] op,
         // RegWrite_ImmSrc_ALU3SrcB_MemWrite_ResultSrc_Branch_ALUOp_Jump_PCRControl // Start_ALU3SrcA
 
 
-            7'b0000011: controls = 14'b1_00_01_0_01_0_000_0_0_0_0; // lw
-            7'b0100011: controls = 14'b0_01_01_1_00_0_000_0_0_0_0; // sw
-            7'b0110011: controls = 14'b1_xx_00_0_00_0_010_0_0_0_0; // R-type
-            7'b1100011: controls = 14'b0_10_00_0_xx_1_001_0_1_0_0; // bne / beq
-            7'b0010011: controls = 14'b1_00_01_0_00_0_010_0_0_0_0; // I-type ALU
-            7'b1101111: controls = 14'b1_11_00_0_10_0_000_1_1_0_0; // jal
-            7'b1100111: controls = 14'b1_00_01_0_00_0_010_1_0_0_0; // jalr
+            7'b0000011: controls = 16'b1_00_01_0_01_0_000_0_0_0_0; // lw
+            7'b0100011: controls = 16'b0_01_01_1_00_0_000_0_0_0_0; // sw
+            7'b0110011: controls = 16'b1_xx_00_0_00_0_010_0_0_0_0; // R-type
+            7'b1100011: controls = 16'b0_10_00_0_xx_1_001_0_1_0_0; // bne / beq
+            7'b0010011: controls = 16'b1_00_01_0_00_0_010_0_0_0_0; // I-type ALU
+            7'b1101111: controls = 16'b1_11_00_0_10_0_000_1_1_0_0; // jal
+            7'b1100111: controls = 16'b1_00_01_0_00_0_010_1_0_0_0; // jalr
 
-            7'b0000000: controls = 14'b1_xx_10_0_00_0_110_0_0_1_0; // gcd
-            7'b0000001: controls = 14'b1_xx_10_0_00_0_110_0_0_1_1; // lcm
+            7'b0000000: controls = 16'b1_xx_10_0_00_0_110_0_0_1_0; // gcd
+            7'b0000001: controls = 16'b1_xx_10_0_00_0_110_0_0_1_1; // lcm
 
-            default: controls = 14'bx_xx_xx_x_xx_x_xxx_x_1; // ???
+            default: controls = 16'bx_xx_xx_x_xx_x_xxx_x_1_0_0; // ???
     endcase
 endmodule
 
