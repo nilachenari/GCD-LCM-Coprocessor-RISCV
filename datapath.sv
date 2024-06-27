@@ -37,6 +37,8 @@ module datapath(input logic clk, reset, PCRControl,
     // ALU logic
     mux2 #(32) srcbmux(WriteData, ImmExt, ALUSrc, SrcB);
     alu alu(SrcA, SrcB, ALUControl, ALUResult, Zero);
-    mux3 #(32) resultmux( ALUResult, ReadData, PCPlus4,
-    ResultSrc, Result);
+    mux3 #(32) resultmux( ALUResult, ReadData, PCPlus4, ans, ResultSrc, Result);
+
+    logic [31:0] ans;
+    assign ans = {24'b0, copAns[7:0]};
 endmodule
