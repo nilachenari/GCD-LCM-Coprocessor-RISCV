@@ -9,7 +9,8 @@ module controller(input logic [6:0] op,
                     output logic [1:0] ImmSrc,
                     output logic [2:0] ALUControl,
                     output logic PCRControl, 
-                    output logic Start);
+                    output logic Start,
+                    input logic copDone);
     logic [1:0] ALUOp;
     logic Branch;
     maindec md(op, ResultSrc, MemWrite, Branch,
