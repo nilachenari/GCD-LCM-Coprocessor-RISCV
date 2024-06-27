@@ -21,7 +21,9 @@ module datapath(input logic clk, reset, PCRControl,
 
 
     logic enable;
-    assign enable = (~Start | Start & copAns[8]);
+    logic done;
+    assign done = copAns[8];
+    assign enable = (~Start | Start & done);
     flopenr #(32) pcreg(clk, reset, enable, PCNext, PC);
     // flopr #(32) pcreg(clk, reset, PCNext, PC);
     

@@ -29,9 +29,10 @@ module coprocessor (
 
     always_ff @(posedge clk) begin
         if (startCounter == 3'd6) begin
-            ReadData <= 32'hFFFFF0FF; // Set every bit to 1
+            ReadData <= 32'hFFFFF1FF; // Set every bit to 1
         end else begin
-            ReadData <= 32'h00000100; // Set every bit to 0
+            ReadData <= 32'h00000010; // Set every bit to 0
+            startCounter <= startCounter + 1;
         end
     end
 
