@@ -10,7 +10,8 @@ module datapath(input logic clk, reset, PCRControl,
                 output logic [31:0] ALUResult, WriteData,
                 input logic [31:0] ReadData,
                 output logic [31:0] WDFinal,
-                input logic Start);
+                input logic Start,
+                input logic [31:0] copAns);
     logic [31:0] PCNext, PCPlus4, PCAdderRes, PCTarget;
     logic [31:0] ImmExt;
     logic [31:0] SrcA, SrcB;
@@ -35,10 +36,11 @@ module datapath(input logic clk, reset, PCRControl,
     WDSel sel (WDCop, WriteData, Start, WDFinal);
 
     // ALU logic
-    mux2 #(32) srcbmux(WriteData, ImmExt, ALUSrc, SrcB);
-    alu alu(SrcA, SrcB, ALUControl, ALUResult, Zero);
-    mux3 #(32) resultmux( ALUResult, ReadData, PCPlus4, ans, ResultSrc, Result);
 
     logic [31:0] ans;
     assign ans = {24'b0, copAns[7:0]};
+    
+    mux2 #(32) srcbmux(WriteData, ImmExt, ALUSrc, SrcB);
+    alu alu(SrcA, SrcB, ALUControl, ALUResult, Zero);
+    mux3 #(32) resultmux( ALUResult, ReadData, PCPlus4, ans, ResultSrc, Result);
 endmodule

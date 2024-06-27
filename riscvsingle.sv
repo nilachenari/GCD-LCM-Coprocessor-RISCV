@@ -6,7 +6,7 @@ module riscvsingle(input logic clk, reset,
                 input logic [31:0] ReadData,
                 output logic [31:0] WDFinal,
                 output logic Start,
-                output logic [31:0] AnsData);
+                input logic [31:0] AnsData);
     logic ALUSrc, RegWrite, Jump, Zero, PCRControl, PCSrc;
     logic [1:0] ResultSrc, ImmSrc;
     logic [2:0] ALUControl;
@@ -20,5 +20,5 @@ module riscvsingle(input logic clk, reset,
             ALUSrc, RegWrite,
             ImmSrc, ALUControl,
             Zero, PC, Instr,
-            ALUResult, WriteData, ReadData, WDFinal, Start, copAns);
+            ALUResult, WriteData, ReadData, WDFinal, Start, AnsData);
 endmodule
