@@ -18,7 +18,18 @@ module datapath(input logic clk, reset, PCRControl,
     logic [31:0] Result;
     logic [31:0] WDCop;
     // next PC logic
-    flopr #(32) pcreg(clk, reset, PCNext, PC);
+
+
+    logic enable;
+    assign enable = (~Start | Start & copAns[8]);
+    flopenr #(32) pcreg(clk, reset, enable, PCNext, PC);
+    // flopr #(32) pcreg(clk, reset, PCNext, PC);
+    
+    // i want to update here
+    // enable = true if(!start || start && done)
+
+
+
     adder pcadd4(PC, 32'd4, PCPlus4);
     adder pcaddbranch(PC, ImmExt, PCAdderRes);
     mux2 #(32) r_or_not(ALUResult, PCAdderRes, PCRControl, PCTarget);
