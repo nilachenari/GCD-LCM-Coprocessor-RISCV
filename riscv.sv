@@ -8,5 +8,5 @@ module riscv(input logic clk, reset,
     DataAdr, WriteData, ReadData, WDFinal ,Start);
     imem imem(PC, Instr);
     dmem dmem(clk, MemWrite, DataAdr, WDFinal, ReadData);
-    // cop coproc(clk, Start, WDFinal, AnsData);
+    coprocessor cop(clk, Start, WDFinal, copDone, AnsData);
 endmodule
