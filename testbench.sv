@@ -21,11 +21,11 @@ module testbench();
     always @(negedge clk) begin
         if(MemWrite)
         begin
-            if(DataAdr === 104 & WDFinal === 25) begin
+            if(DataAdr === 108 & WDFinal === 25) begin
                 $display("Simulation succeeded");
                 $stop;
             end 
-            else if (DataAdr !== 99) begin
+            else if (DataAdr !== 96) begin
                 $display("Simulation failed: ReadData = %d", DataAdr);
                 $stop;
             end
