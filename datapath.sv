@@ -25,7 +25,6 @@ module datapath(input logic clk, reset, PCRControl,
     assign done = copAns[8];
     assign enable = (~Start | Start & done);
     flopenr #(32) pcreg(clk, reset, enable, PCNext, PC);
-    // flopr #(32) pcreg(clk, reset, PCNext, PC);
     
     // i want to update here
     // enable = true if(!start || start && done)
@@ -42,10 +41,8 @@ module datapath(input logic clk, reset, PCRControl,
     Instr[11:7], Result, SrcA, WriteData);
     extend ext(Instr[31:7], ImmSrc, ImmExt);
     
-    // make the 32 bit word you wanna pass to cop
+    // WriteData to cop | WriteData
     assign WDCop = {15'b0, Instr[0], WriteData[7:0], SrcA[7:0]};
-
-    // logics
     WDSel sel (WDCop, WriteData, Start, WDFinal);
 
     // ALU logic
@@ -55,5 +52,7 @@ module datapath(input logic clk, reset, PCRControl,
     
     mux2 #(32) srcbmux(WriteData, ImmExt, ALUSrc, SrcB);
     alu alu(SrcA, SrcB, ALUControl, ALUResult, Zero);
+
+    // ResultSrc
     mux3 #(32) resultmux( ALUResult, ReadData, PCPlus4, ans, ResultSrc, Result);
 endmodule

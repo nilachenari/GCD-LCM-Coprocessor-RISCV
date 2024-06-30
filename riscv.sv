@@ -4,7 +4,7 @@ module riscv(input logic clk, reset,
             output logic Start);
     logic [31:0] PC, Instr, ReadData, AnsData;
 
-    // instantiate processor and memories
+    // instantiate processor, memories and coprocessor
     riscvsingle rvsingle( clk, reset, PC, Instr, MemWrite,
     DataAdr, WriteData, ReadData, WDFinal ,Start, AnsData);
     imem imem(PC, Instr);

@@ -9,24 +9,27 @@ module testbench();
     
     // initialize test
     initial begin
-        reset <= 1; # 22; reset <= 0;
+        reset <= 1; # 10; reset <= 0;
     end
         
     // generate clock to sequence tests
     always begin
-        clk <= 1; # 20; clk <= 0; # 20;
+        clk <= 1; # 5; clk <= 0; # 5;
     end
      
     // check results
     always @(negedge clk) begin
         if(MemWrite)
         begin
-            if(DataAdr === 108 & WDFinal === 25) begin
+            if(DataAdr === 124 & WDFinal === 21) begin
                 $display("Simulation succeeded");
                 $stop;
             end 
-            else if (DataAdr !== 96) begin
-                $display("Simulation failed: ReadData = %d", DataAdr);
+            else if (DataAdr === 96) begin
+                $display("Simulation running: DataAdr = %d", DataAdr);
+            end
+            else begin
+                $display("Simulation failed: DataAdr = %d", DataAdr);
                 $stop;
             end
         end

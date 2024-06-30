@@ -121,36 +121,3 @@ module coprocessor (input logic clk, Start,
         coCtrl coctrl(checkEq, mainOp[0], smaller, writeAdr, op, topCtrl, botCtrl, writeEn);
 
 endmodule
-
-
-
-// module coprocessor (
-//     input logic clk,
-//     input logic Start,
-//     input logic [31:0] WriteData,
-//     output logic [31:0] ReadData
-// );
-
-//     // Counter to track the number of consecutive cycles Start is 1
-//     logic [2:0] startCounter;
-//     logic prevStart;
-
-//     always_ff @(posedge clk) begin
-//         if (prevStart == 1) 
-//             if (startCounter < 3'd6)
-//                 startCounter <= startCounter + 1;
-//             else
-//             startCounter <= 3'd0;
-//         prevStart <= Start;
-//     end
-
-//     always_ff @(posedge clk) begin
-//         if (startCounter == 3'd6) begin
-//             ReadData <= 32'hFFFFF10F; // Set every bit to 1
-
-//         end else begin
-//             ReadData <= 32'h00000010; // Set every bit to 0
-//         end
-//     end
-
-// endmodule
