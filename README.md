@@ -1,154 +1,79 @@
-GCD-LCM Coprocessor for V-RISC
+# Special-Purpose Coprocessor for GCD & LCM Calculation
+
+## Overview
+This project implements a **special-purpose coprocessor** designed to compute the **Greatest Common Divisor (GCD)** and **Least Common Multiple (LCM)** of two 8-bit numbers. The coprocessor is integrated into a **single-cycle processor** and communicates using a custom instruction format.  
+
+## Features
+- Computes **GCD** and **LCM** using hardware-based algorithms.
+- Uses a **start signal** to begin operations and a **done signal** to indicate completion.
+- Integrated with a **single-cycle processor** (V-RISC).
+- Implements a **control unit (FSM)** and **datapath** for efficient computation.
+- Fully tested using **assembly programs** and **testbench simulations**.
+
+## Architecture
+The coprocessor is designed as a **multi-cycle processing unit** that interacts with the processor. It consists of:
+1. **Datapath**: Performs computations using a single **ALU-based subtraction/addition unit**.
+2. **Control Unit (FSM)**: Controls execution flow based on instruction type.
+3. **Memory & Register Interface**: Uses custom instruction formats to communicate with the main processor.
+
+### **Instruction Format**
+The coprocessor uses a custom **R-type instruction format**:
+
+| Opcode | rs1  | rs2  | func  | rd   |
+|--------|------|------|-------|------|
+| `0000000A` | `AAAA` | `BBBB` | `B000` | `CCCC` | (GCD) |
+| `0000000A` | `AAAA` | `BBBB` | `B000` | `CCCC` | (LCM) |
+
+### **Processor-Coprocessor Communication**
+1. The processor writes a 32-bit word to the coprocessor.
+2. The coprocessor processes the GCD/LCM operation.
+3. The processor continuously reads until the **done signal** is asserted.
+4. The result is then stored in the destination register.
+
+### **Control Signals**
+- **Start**: Signals the coprocessor to begin execution.
+- **Done**: Indicates the completion of the operation.
+- **Opcode**: Determines whether to compute GCD (`0`) or LCM (`1`).
+
+## Implementation
+### **Processor Modifications**
+- Added a **Start signal** to trigger computation.
+- Integrated a **MUX for WriteData selection** (memory vs. coprocessor).
+- Modified **PC update logic** to **stall** execution until computation is complete.
+- Created a **new instruction decoder** for coprocessor instructions.
+
+### **Coprocessor Design**
+- **Datapath**:
+  - Uses an **ALU-based iterative approach** for GCD and LCM.
+  - Optimized to share a **single arithmetic unit** for subtraction/addition.
+- **Control Unit (FSM)**:
+  - Implements a state machine to manage execution.
+  - Waits for **start signal** and asserts **done signal** upon completion.
+
+## Testing & Verification
+1. **Assembly Program**:  
+   - Implemented an assembly program that tests GCD & LCM computations.
+   - The program reads numbers from memory, writes them to the coprocessor, and stores the results.
+2. **Testbench Simulation**:  
+   - Created a **testbench** to verify hardware functionality.
+   - Checks **WriteData, DataAddress, and Done signals** for correctness.
+   - Simulated using **ModelSim/Vivado**.
+
+## How to Run
+1. **Compile and synthesize the processor and coprocessor in Verilog/VHDL**.
+2. **Load the assembly program** into the instruction memory.
+3. **Simulate the system** using ModelSim or another HDL simulator.
+4. **Verify output in memory/registers**.
+
+## Future Improvements
+- Optimize the **datapath** to further reduce execution cycles.
+- Implement an **interrupt-based approach** instead of polling for done.
+- Extend the coprocessor to support additional mathematical operations.
+
+## Authors
+- **[Nila Chenari]**
+- **[Barbod Coliae]**
+- Instructor: Dr. Attarzadeh Niaki | Course: Computer ArchitectureSemester: Spring 2024
+- This project is the final project for the Computer Architecture course and serves as a practical implementation of integrating custom hardware with a RISC processor.
 
-Overview
-
-This project implements a special-purpose coprocessor designed to compute the Greatest Common Divisor (GCD) and Least Common Multiple (LCM) of two 8-bit numbers. The coprocessor is integrated with a single-cycle V-RISC processor, allowing it to receive instructions, perform computations, and return results.
-
-The project involves:
-
-Designing a co-processor with a minimal instruction set for GCD and LCM.
-
-Modifying the single-cycle processor to communicate with the co-processor.
-
-Implementing a multi-cycle approach for the co-processor, since GCD and LCM computations require multiple clock cycles.
-
-Writing a testbench to verify the correctness of the design.
-
-Developing an assembly program to demonstrate real-world usage.
-
-Features
-
-Coprocessor Architecture:
-
-Two 8-bit inputs (X0, Y0)
-
-One 8-bit output (Result)
-
-A Start signal to initiate computation
-
-A Done signal to indicate completion
-
-Opcode-based selection of GCD (op = 1) and LCM (op = 0)
-
-Processor Modifications:
-
-Extended the control unit to handle coprocessor instructions.
-
-Implemented a mechanism to stall instruction fetching while the coprocessor is running.
-
-Modified the data path to support reading from the coprocessor.
-
-Multi-Cycle Execution:
-
-Since GCD and LCM operations require multiple iterations, we designed a state machine that operates across multiple clock cycles, unlike the single-cycle processor.
-
-The processor waits for the Done signal before proceeding with the next instruction.
-
-Instruction Format
-
-We used an R-type format for the coprocessor instructions:
-
-0000000A|AAAA|BBBB|B000|CCCC|C000|0000  # GCD instruction
-0000000A|AAAA|BBBB|B000|CCCC|C000|0001  # LCM instruction
-
-Where:
-
-A represents the destination register (rd)
-
-B represents the first source register (rs1)
-
-C represents the second source register (rs2)
-
-Processor-Coprocessor Communication
-
-Writing to the Coprocessor
-
-31:17  | 16 | 15:8 | 7:0  
--------|----|------|------
-  (Unused) | op | Y0 | X0  
-
-The processor writes X0, Y0, and the operation type (op) to the coprocessor.
-
-The Start signal is asserted automatically.
-
-Reading from the Coprocessor
-
-31:9  | 8 | 7:0  
-------|---|------
-  (Unused) | Done | Result  
-
-The processor continuously polls the Done flag until computation is complete.
-
-Once Done = 1, the result is stored in the processor’s register file.
-
-Implementation Steps
-
-Modify the V-RISC processor to:
-
-Detect coprocessor instructions.
-
-Send values and opcodes to the coprocessor.
-
-Stall instruction fetching until the coprocessor finishes execution.
-
-Design the Coprocessor:
-
-Implement the state machine to handle multi-cycle execution.
-
-Use registers and ALU logic for iterative GCD/LCM computation.
-
-Create the Testbench:
-
-Verify correct values are written to and read from the coprocessor.
-
-Ensure the processor stalls correctly during computation.
-
-Develop Assembly Code:
-
-Implement an assembly program to compute GCD and LCM of stored values in a loop.
-
-Translate it into machine code for simulation.
-
-Testing
-
-The testbench checks:
-
-Correct execution of GCD and LCM computations.
-
-Proper stalling and waiting for the Done signal.
-
-Data integrity between processor and coprocessor.
-
-Simulation Outputs:
-
-Signal traces were used to verify the timing of computation cycles.
-
-Expected vs. actual outputs were compared to confirm correctness.
-
-Repository Structure
-
-GCD-LCM-Coprocessor/
-│── src/            # Hardware design files (Verilog/VHDL)
-│── sim/            # Testbenches and simulation scripts
-│── asm/            # Assembly programs for testing
-│── docs/           # Report and documentation
-│── README.md       # Project overview (this file)
-
-Future Work
-
-Optimize the multi-cycle execution to reduce the number of clock cycles required.
-
-Extend the coprocessor to support additional arithmetic operations.
-
-Implement a hardware-friendly division algorithm for faster GCD computation.
-
-Contributors
-
-[Nila Chenari]
-
-[Barbod Coliae]
-
-Instructor: Dr. Attarzadeh Niaki | Course: Computer ArchitectureSemester: Spring 2024
-
-This project is the final project for the Computer Architecture course and serves as a practical implementation of integrating custom hardware with a RISC processor.
 
