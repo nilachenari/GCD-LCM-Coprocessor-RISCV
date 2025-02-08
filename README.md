@@ -57,10 +57,10 @@ The coprocessor uses a custom **R-type instruction format**:
 2. **Testbench Simulation**:  
    - Created a **testbench** to verify hardware functionality.
    - Checks **WriteData, DataAddress, and Done signals** for correctness.
-   - Simulated using **ModelSim/Vivado**.
+   - Simulated using **ModelSim**.
 
 ## How to Run
-1. **Compile and synthesize the processor and coprocessor in Verilog/VHDL**.
+1. **Compile and synthesize the processor and coprocessor in Verilog**.
 2. **Load the assembly program** into the instruction memory.
 3. **Simulate the system** using ModelSim or another HDL simulator.
 4. **Verify output in memory/registers**.
