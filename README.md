@@ -19,8 +19,8 @@ The coprocessor is designed as a **multi-cycle processing unit** that interacts 
 ### **Instruction Format**
 The coprocessor uses a custom **R-type instruction format**:
 
-| Opcode | rs1  | rs2  | func  | rd   |
-|--------|------|------|-------|------|
+| Opcode   | rs1  | rs2  | func  | rd   |
+|----------|------|------|-------|------|
 | `0000000A` | `AAAA` | `BBBB` | `B000` | `CCCC` | (GCD) |
 | `0000000A` | `AAAA` | `BBBB` | `B000` | `CCCC` | (LCM) |
 
@@ -46,6 +46,10 @@ The coprocessor uses a custom **R-type instruction format**:
 - **Datapath**:
   - Uses an **ALU-based iterative approach** for GCD and LCM.
   - Optimized to share a **single arithmetic unit** for subtraction/addition.
+
+ ![image](https://github.com/user-attachments/assets/85df97bb-c209-4162-9bce-d27ee24987be)
+
+    
 - **Control Unit (FSM)**:
   - Implements a state machine to manage execution.
   - Waits for **start signal** and asserts **done signal** upon completion.
@@ -65,11 +69,17 @@ The coprocessor uses a custom **R-type instruction format**:
 3. **Simulate the system** using ModelSim or another HDL simulator.
 4. **Verify output in memory/registers**.
 
+## Synthesis and FPGA Implementation
+In the first phase, synthesize the coprocessor alone and then the entire system designed so far on an FPGA. This project assumes that the final system will be implemented using a Nano10-DE board, with the FPGA used in synthesis and simulation being a **7I23U6CSEBA5 SE V Cyclone**. Report the synthesis results in a table format for each case as outlined in the exercises.
+
+![photo_5769166227548260876_y](https://github.com/user-attachments/assets/ae74c8f6-ff8d-4d4b-a84c-bc285d0b2726)
+
+![photo_5769166227548260875_y](https://github.com/user-attachments/assets/154bc17b-367e-4357-bbfd-255cc8de7b16)
+
 
 ## Authors
-- **[Nila Chenari]**
-- **[Barbod Coliae]**
-- Instructor: Dr. Attarzadeh Niaki | Course: Computer ArchitectureSemester: Spring 2024
+- **Nila Chenari**
+- **Barbod Coliae**
+- Instructor: Dr. Attarzadeh Niaki | Course: Computer Architecture | Semester: Spring 2024  
 - This project is the final project for the Computer Architecture course and serves as a practical implementation of integrating custom hardware with a RISC processor.
-
 
