@@ -65,10 +65,6 @@ The coprocessor uses a custom **R-type instruction format**:
 3. **Simulate the system** using ModelSim or another HDL simulator.
 4. **Verify output in memory/registers**.
 
-## Future Improvements
-- Optimize the **datapath** to further reduce execution cycles.
-- Implement an **interrupt-based approach** instead of polling for done.
-- Extend the coprocessor to support additional mathematical operations.
 
 ## Authors
 - **[Nila Chenari]**
